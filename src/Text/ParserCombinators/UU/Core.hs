@@ -538,18 +538,25 @@ getCheapest n l  =  snd $  foldr (\(w,ll) btf@(c, l)
                                )   (maxBound, error "getCheapest") l
 
 
-traverse :: Int -> Steps a -> Int -> Int  -> Int 
-traverse 0  _            v c  =  trace' ("traverse " ++ show' 0 v c ++ " choosing" ++ show v ++ "\n") v
-traverse n (Step _   l)  v c  =  trace' ("traverse Step   " ++ show' n v c ++ "\n") (traverse (n -  1 ) l (v - n) c)
-traverse n (Micro x  l)  v c  =  trace' ("traverse Micro  " ++ show' n v c ++ "\n") (traverse n         l v c)
-traverse n (Apply _  l)  v c  =  trace' ("traverse Apply  " ++ show n ++ "\n")      (traverse n         l  v      c)
-traverse n (Fail m m2ls) v c  =  trace' ("traverse Fail   " ++ show m ++ show' n v c ++ "\n") 
-                                 (foldr (\ (w,l) c' -> if v + w < c' then traverse (n -  1 ) l (v+w) c'
-                                                       else c') c (map ($m) m2ls)
-                                 )
-traverse n (End_h ((a, lf))    r)  v c =  traverse n (lf a `best` removeEnd_h r) v c
-traverse n (End_f (l      :_)  r)  v c =  traverse n (l `best` r) v c
-traverse n (Done _               )  v c =  trace' ("traverse at Done" ++ show' 0 v c ++ " choosing" ++ show v ++ "\n") 0
+traverse :: Int -> Steps a -> Int -> Int  -> Int
+traverse 0  _            v c  =  trace' ("traverse        " ++ show' 0 v c ++ " choosing " ++ show v ++ "\n") $
+  v + 100 -- uncertainty cost
+traverse n (Step _   l)  v c  =  trace' ("traverse Step   " ++ show' n v c ++ "\n") $
+  traverse (n - 1) l v c
+traverse n (Micro x  l)  v c  =  trace' ("traverse Micro  " ++ show' n v c ++ "\n") $
+  traverse n         l v c
+traverse n (Apply _  l)  v c  =  trace' ("traverse Apply  " ++ show n ++ "\n") $
+  traverse n         l  v      c
+traverse n (Fail m m2ls) v c  =  trace' ("traverse Fail   " ++ show m ++ " " ++ show' n v c ++ " length m2ls = " ++ show (length m2ls) ++ "\n") $
+  foldr ((\ (w,l) c' -> if v + w < c' then traverse (n -  1 ) l (v+w) c'
+                        else c') . ($m)) c m2ls
+traverse n (End_h (a, lf)    r)  v c =  trace' ("traverse End_h  " ++ show' n v c ++ "\n") $
+  traverse n (lf a `best` removeEnd_h r) v c
+traverse n (End_f (l      :_)  r)  v c =  trace' ("traverse End_f  " ++ show' n v c ++ "\n") $
+  traverse n (l `best` r) v c
+traverse n (End_f []  r)  v c =  error "Cannot traverse End_f with empty list"
+traverse n (Done _               )  v c =  trace' ("traverse Done   " ++ show' n v c ++ " choosing " ++ show v ++ "\n")
+  v
 
 show' :: (Show a, Show b, Show c) => a -> b -> c -> String
 show' n v c = "n: " ++ show n ++ " v: " ++ show v ++ " c: " ++ show c
