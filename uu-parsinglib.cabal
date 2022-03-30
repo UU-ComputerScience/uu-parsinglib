@@ -30,7 +30,7 @@ Description:         New version of the Utrecht University parser combinator lib
                      We maintain a low frequency mailing for discussing the package. You can subscribe at:  <http://lists.science.uu.nl/mailman/listinfo/parsing>
 Category:            Parsing,Text,ParserCombinators
 
-cabal-version:       >= 1.6
+cabal-version:       >= 1.10
 
 source-repository head
      type: git
@@ -38,6 +38,7 @@ source-repository head
 
 Library
   hs-source-dirs:    src
+  default-language:  Haskell2010
 
   Build-Depends:     base >= 4.2 && <5, time, ListLike >= 3.0.1, uu-interleaved >= 0.1.0 && < 0.3
 
