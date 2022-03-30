@@ -33,8 +33,8 @@ Category:            Parsing,Text,ParserCombinators
 cabal-version:       >= 1.6
 
 source-repository head
-     type: svn
-     location: https://svn.science.uu.nl/repos/project.STEC.uu-parsinglib/trunk
+     type: git
+     location: https://github.com/UU-ComputerScience/uu-parsinglib
 
 Library
   hs-source-dirs:    src
