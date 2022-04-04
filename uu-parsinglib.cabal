@@ -5,10 +5,9 @@ License:             MIT
 Copyright:           S Doaitse Swierstra 
 License-file:        LICENSE
 Author:              Doaitse Swierstra, Utrecht University
-Maintainer:          Doaitse Swierstra    
-Stability:           stable, but evolving
-Homepage:            http://www.cs.uu.nl/wiki/bin/view/HUT/ParserCombinators
-Bug-reports:         mailto:doaitse@swierstra.net      
+Maintainer:          Jeroen Bransen
+Stability:           stable
+Bug-reports:         https://github.com/UU-ComputerScience/uu-parsinglib/issues
 Synopsis:            Fast, online, error-correcting, monadic, applicative, merging, permuting, interleaving, idiomatic parser combinators.
 Description:         New version of the Utrecht University parser combinator library, which  provides online, error correction, 
                      annotation free, applicative style parser combinators. In addition to this we provide a monadic and an idomatic interface.
